@@ -12,7 +12,8 @@ namespace Personal_finance
         private readonly Predicate<T> _canExecute;
         private readonly Action<T> _execute;
 
-        public RelayCommand(Action<T> execute): this(execute, null)
+        public RelayCommand(Action<T> execute)
+           : this(execute, null)
         {
             _execute = execute;
         }
