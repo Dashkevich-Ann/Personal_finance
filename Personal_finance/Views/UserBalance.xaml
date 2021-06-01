@@ -1,0 +1,48 @@
+﻿<UserControl x:Class="Personal_finance.Views.UserBalance"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Personal_finance.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="60"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid Name="dummygrid" Visibility="Hidden" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.2*"></ColumnDefinition>
+                <ColumnDefinition Width="0.2*"></ColumnDefinition>
+                <ColumnDefinition Width="0.4*"></ColumnDefinition>
+                <ColumnDefinition Width="0.2*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Border Grid.Column="0" Name="dummywidth1"></Border>
+            <Border Grid.Column="1" Name="dummywidth2"></Border>
+            <Border Grid.Column="2" Name="dummywidth3"></Border>
+            <Border Grid.Column="3" Name="dummywidth4"></Border>
+        </Grid>
+
+        <ListView Margin="10" Name="UserBalanceDateBinding" Grid.Row="0" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Hidden">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Date}" Width="{Binding ElementName=dummywidth1, Path=ActualWidth}">Date</GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Category.Name}" Width="{Binding ElementName=dummywidth2, Path=ActualWidth}">Category</GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Comment}" Width="{Binding ElementName=dummywidth3, Path=ActualWidth}">Comment</GridViewColumn>
+                    <GridViewColumn DisplayMemberBinding="{Binding Path=Amount}" Width="{Binding ElementName=dummywidth4, Path=ActualWidth}">Amount</GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <DockPanel Grid.Row="1">
+            <Button Name="NewButton" Width="100" HorizontalAlignment="Left" Height="40" Margin="10" Content="New" FontSize="18" Click="NewButton_Click"></Button>
+            <Button Name="EditButton" Width="100" HorizontalAlignment="Left" Height="40" Margin="10" Content="Edit" FontSize="18"></Button>
+            <Button Name="DeleteButton" Width="100" HorizontalAlignment="Left" Height="40" Margin="10" Content="Delete" FontSize="18" Click="DeleteButton_Click"></Button>
+            <Label Content="TOTAL:" Width="300" HorizontalAlignment="Left" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" FontSize="18"></Label>
+            <TextBlock x:Name="TotalTextBlock" Margin="10" FontSize="18" ></TextBlock>
+        </DockPanel>
+        
+    </Grid>
+</UserControl>
