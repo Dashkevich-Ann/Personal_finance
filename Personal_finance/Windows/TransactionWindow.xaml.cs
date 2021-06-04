@@ -13,16 +13,25 @@ namespace Personal_finance.Windows
     /// </summary>
     public partial class TransactionWindow : Window
     {
-        private readonly TransactionCategoryService transactionCategoryService;
-        private readonly IEnumerable<TransactionCategoryDTO> transactionCategories;
-
         TransactionViewModel model;
 
-        public TransactionWindow()
+        public TransactionWindow(TransactionDTO transactionDTO = null)
         {
             InitializeComponent();
-            model = new TransactionViewModel();
+            model = new TransactionViewModel(transactionDTO);
             this.DataContext = model;
+            SetRadioButtons(transactionDTO);
+        }
+
+        private void SetRadioButtons(TransactionDTO transactionDTO)
+        {
+            if(transactionDTO?.Category?.Type == TransactionType.Income)
+            {
+                IncomeTypeCategory.IsChecked = true;
+                return;
+            }
+
+            CostTypeCategory.IsChecked = true;
         }
 
         private void CategoryType_Checked(object sender, RoutedEventArgs e)
@@ -38,7 +47,19 @@ namespace Personal_finance.Windows
                 CostComboBox.Visibility = Visibility.Collapsed;
                 IncomeComboBox.Visibility = Visibility.Visible;
             }
+        }
 
+        private void OKButton_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = true;
+            model.UpsertTransaction();
+            Close();
+        }
+
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = false;
+            Close();
         }
     }
 }

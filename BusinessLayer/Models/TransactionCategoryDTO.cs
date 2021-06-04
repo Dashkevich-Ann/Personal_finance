@@ -12,6 +12,7 @@ namespace BusinessLayer.Models
         public string Name { get; set; }
         public decimal? MonthLimit { get; set; }
         public TransactionType Type { get; set; }
+        public string LimitDisplayValue => Type == TransactionType.Income ? "-" : MonthLimit?.ToString("C") ?? "-";
     }
 
     public enum TransactionType

@@ -1,0 +1,46 @@
+﻿<Window x:Class="Personal_finance.Windows.CategoryWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Personal_finance.Windows"
+        mc:Ignorable="d"
+        Title="Edit Category" Height="250" Width="400">
+    <Grid ShowGridLines="True">
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.40*"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Label Name="NameLabel" Content="Name" Grid.Row="0" Grid.Column="0"  VerticalAlignment="Center" Margin="10" FontSize="14"></Label>
+        <TextBox Name="NameTextBox" Grid.Row="0" Grid.Column="1" Margin="10" BorderBrush="Black" BorderThickness="2" 
+                 Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+        <Label Name="TypeLabel" Content="Type" Grid.Row="1" Grid.Column="0"  VerticalAlignment="Center" Margin="10" FontSize="14"></Label>
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center">
+            <RadioButton x:Name="CostTypeCategory" Content="Cost" Margin="10" IsChecked="True" FontSize="14" Checked="CostTypeCategory_Checked"
+                         Command="{Binding RadioButtonCommand}" CommandParameter="1">
+            </RadioButton>
+            <RadioButton x:Name="IncomeTypeCategory" Content="Income" Margin="10"  FontSize="14" Checked="IncomeTypeCategory_Checked"
+                        Command="{Binding RadioButtonCommand}" CommandParameter="0">
+            </RadioButton>
+        </StackPanel>
+        <Label Name="MonthLimitLabel" Content="Month Limit" Grid.Row="2" Grid.Column="0"  VerticalAlignment="Center" Margin="10" FontSize="14"></Label>
+        <TextBox Name="MonthLimitTextBox" Grid.Row="2" Grid.Column="1" Margin="10" BorderBrush="Black" BorderThickness="2" 
+                 Text="{Binding MonthLimit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                 IsReadOnly="{Binding MonthLimitDisabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                 ></TextBox>
+        <Grid Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Button Name="OKButton" Content="OK" Width="100" Height="25" Grid.Column="0" FontSize="16" Click="OKButton_Click" Command="{Binding OkBtnCommand}"></Button>
+            <Button Name="CancelButton" Content="Cancel" Width="100" Height="25" Grid.Column="1" FontSize="16" Click="CancelButton_Click"></Button>
+        </Grid>
+    </Grid>
+</Window>

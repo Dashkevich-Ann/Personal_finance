@@ -38,8 +38,7 @@ namespace Personal_finance
                 Statistics
             };
 
-            var w = new TransactionWindow();
-            w.ShowDialog();
+            SubscribeToggleButtonOnClikc();
         }
 
         private void ToggleButtonCliked(object sender, RoutedEventArgs routedEventArgs)
@@ -48,19 +47,16 @@ namespace Personal_finance
 
             if(button != null)
             {
+                var btnParams = button.CommandParameter.ToString();
+
                 foreach(var btn in buttonList)
                 {
-                    if (btn.Equals(button))
+                    if (btnParams == btn.CommandParameter.ToString())
                         btn.IsChecked = true;
                     else
                         btn.IsChecked = false;
                 }
             }
-        }
-
-        private void ToggleButtonUnCheck(object sender, RoutedEventArgs routedEventArgs)
-        {
-            (sender as ToggleButton).IsChecked = true;
         }
 
         private void SubscribeToggleButtonOnClikc()

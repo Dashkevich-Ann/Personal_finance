@@ -4,10 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Personal_finance.Windows" 
-        xmlns:local1="clr-namespace:Personal_finance.ValidationRules"
         mc:Ignorable="d"
         Title="TransactionWindow" Height="350" Width="500">
-    <Grid ShowGridLines="True">
+    <Grid ShowGridLines="False">
         <Grid.RowDefinitions>
             <RowDefinition Height="0.12*"></RowDefinition>
             <RowDefinition Height="0.2*"></RowDefinition>
@@ -15,7 +14,6 @@
             <RowDefinition Height="0.2*"></RowDefinition>
             <RowDefinition Height="0.38*"></RowDefinition>
             <RowDefinition Height="0.12*"></RowDefinition>
-
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
@@ -43,17 +41,10 @@
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0" Name="CategoryLabel" Content="Category" FontSize="14" VerticalAlignment="Center"></Label>
             <ComboBox Grid.Column="1" FontSize="14" Name="CostComboBox" Margin="10 0 10 0" Height="30" VerticalAlignment="Center" DisplayMemberPath="Name"  VerticalContentAlignment="Center"
-          SelectedValuePath="Id" ItemsSource="{Binding Costs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                <ComboBox.SelectedItem>
-                    <Binding Path="Category">
-                        <Binding.ValidationRules>
-                            <local1:DropDownValidationRule ValidatesOnTargetUpdated="True"/>
-                        </Binding.ValidationRules>
-                    </Binding>
-                </ComboBox.SelectedItem>
+          SelectedValuePath="Id" ItemsSource="{Binding Costs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedValue="{Binding Category, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             </ComboBox>
             <ComboBox Grid.Column="1" FontSize="14" Name="IncomeComboBox" Margin="10 0 10 0" Height="30" VerticalAlignment="Center" VerticalContentAlignment="Center" Visibility="Collapsed"   DisplayMemberPath="Name"
-          SelectedValuePath="Id" ItemsSource="{Binding Incomes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding Category}">
+          SelectedValuePath="Id" ItemsSource="{Binding Incomes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" SelectedValue="{Binding Category, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             </ComboBox>
         </Grid>
         <Grid Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2">
@@ -63,7 +54,7 @@
             </Grid.ColumnDefinitions>
             <Label Name="AmountLabel" Grid.Column="0" Content="Amount" FontSize="14" VerticalAlignment="Center"></Label>
             <TextBox Name="AmountTextBox" 
-                     Text="{Binding Amount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     Text="{Binding Amount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                      Grid.Column="1" Margin="10 0 10 0" Height="30" FontSize="14" Padding="5 0" VerticalContentAlignment="Center"></TextBox>
         </Grid>
         <Grid Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2">
@@ -81,8 +72,8 @@
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Button Name="OKButton" Content="OK" Width="100" Height="25" Grid.Column="0"></Button>
-            <Button Name="CancelButton" Content="Cancel" Width="100" Height="25" Grid.Column="1"></Button>
+            <Button Name="OKButton" Content="OK" Width="100" Height="25" Grid.Column="0" FontSize="16" Click="OKButton_Click" Command="{Binding OkBtnCommand}"></Button>
+            <Button Name="CancelButton" Content="Cancel" Width="100" Height="25" Grid.Column="1" FontSize="16" Click="CancelButton_Click"></Button>
         </Grid>
     </Grid>
 </Window>

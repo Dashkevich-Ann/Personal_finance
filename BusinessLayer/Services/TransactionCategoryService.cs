@@ -31,5 +31,52 @@ namespace BusinessLayer.Services
                 return costDTOs.Concat(incomeDTOs).OrderBy(n => n.Name);
             }
         }
+
+        public void DeleteCategory(TransactionCategoryDTO categoryDTO)
+        {
+            if (categoryDTO == null)
+            {
+                throw new NullReferenceException("Transaction is not found.");
+            }
+            if (categoryDTO.Type == TransactionType.Cost)
+            {
+                using (unitOfWork = new UnitOfWork())
+                {
+                    var cost = unitOfWork.CostCategoryRepository.Find(x => x.Id == categoryDTO.Id).FirstOrDefault();
+                    unitOfWork.CostCategoryRepository.Delete(cost);
+                    unitOfWork.Commit();
+                }
+            }
+            else if (categoryDTO.Type == TransactionType.Income)
+            {
+                using (unitOfWork = new UnitOfWork())
+                {
+                    var income = unitOfWork.IncomeCategoryRepository.Find(x => x.Id == categoryDTO.Id).FirstOrDefault();
+                    unitOfWork.IncomeCategoryRepository.Delete(income);
+                    unitOfWork.Commit();
+                }
+            }
+        }
+
+        public bool CategoryInUse(TransactionCategoryDTO categoryDTO)
+        {
+            if (categoryDTO == null)
+            {
+                throw new NullReferenceException("Transaction is not found.");
+            }
+            using (unitOfWork = new UnitOfWork())
+            {
+                if (categoryDTO.Type == TransactionType.Cost)
+                {
+                    return unitOfWork.CostRepository.GetAll().Any(x => x.CostCategoryId == categoryDTO.Id);
+                }
+                else if (categoryDTO.Type == TransactionType.Income)
+                {
+                    return unitOfWork.IncomeRepository.GetAll().Any(x => x.IncomeCategoryId == categoryDTO.Id);
+                }
+            }
+
+            return false;
+        }
     }
 }

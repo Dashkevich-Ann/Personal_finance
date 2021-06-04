@@ -16,7 +16,7 @@ namespace BusinessLayer.Mappers
             {
                 Id = cost.Id,
                 Date = cost.Date,
-                Amount = cost.Amount * -1,
+                Amount = cost.Amount,
                 Comment = cost.Comment,
                 Category = cost.CostCategory.MapToDTO()
             };

@@ -1,6 +1,7 @@
 ﻿using BusinessLayer.Mappers;
 using BusinessLayer.Models;
 using DataLayer.Interfaces;
+using DataLayer.Models;
 using DataLayer.Repositories;
 using System;
 using System.Collections.Generic;
@@ -32,9 +33,66 @@ namespace BusinessLayer.Services
             }          
         }
 
+        public void CreateTransaction(TransactionDTO transactionDTO)
+        {
+            using (_unit = new UnitOfWork())
+            {
+                if (transactionDTO.Category.Type == TransactionType.Income)
+                {
+                    var income = new Income
+                    {
+                        Id = Guid.NewGuid(),
+                        Amount = transactionDTO.Amount,
+                        Comment = transactionDTO.Comment,
+                        Date = transactionDTO.Date,
+                        IncomeCategoryId = transactionDTO.Category.Id
+                    };
+
+                    _unit.IncomeRepository.Create(income);
+                }
+                else if (transactionDTO.Category.Type == TransactionType.Cost)
+                {
+                    var cost = new Cost
+                    {
+                        Id = Guid.NewGuid(),
+                        Amount = transactionDTO.Amount,
+                        Comment = transactionDTO.Comment,
+                        Date = transactionDTO.Date,
+                        CostCategoryId = transactionDTO.Category.Id,
+                    };
+                    _unit.CostRepository.Create(cost);
+                }
+                _unit.Commit();
+            }
+        }
+
+        public void EditTransaction(TransactionDTO transactionDTO)
+        {
+            using(_unit = new UnitOfWork())
+            {
+                if (transactionDTO.Category.Type == TransactionType.Income)
+                {
+                    var income = _unit.IncomeRepository.Find(x => x.Id == transactionDTO.Id).First();
+                    income.Amount = transactionDTO.Amount;
+                    income.Comment = transactionDTO.Comment;
+                    income.Date = transactionDTO.Date;
+                    income.IncomeCategoryId = transactionDTO.Category.Id;
+                }
+                else if (transactionDTO.Category.Type == TransactionType.Cost)
+                {
+                    var cost = _unit.CostRepository.Find(x => x.Id == transactionDTO.Id).First();
+                    cost.Amount = transactionDTO.Amount;
+                    cost.Comment = transactionDTO.Comment;
+                    cost.Date = transactionDTO.Date;
+                    cost.CostCategoryId = transactionDTO.Category.Id;
+                }
+                _unit.Commit();
+            }
+        }
+
         public void DeleteTransaction(TransactionDTO transactionDTO)
         {
-            if (transactionDTO == null) 
+            if (transactionDTO == null)
             {
                 throw new NullReferenceException("Transaction is not found.");
             }
@@ -56,9 +114,6 @@ namespace BusinessLayer.Services
                     _unit.Commit();
                 }
             }
-
-        }
-
-       
+        } 
     }
 }

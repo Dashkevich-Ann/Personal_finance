@@ -1,9 +1,11 @@
 ﻿using BusinessLayer.Models;
 using BusinessLayer.Services;
 using Personal_finance.ViewModel;
+using Personal_finance.Windows;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -41,11 +43,28 @@ namespace Personal_finance.Views
                 items.Add(item);
             }
             UserBalanceDateBinding.ItemsSource = items;
+            SetTotalLable();
+        }
+
+        private void SetTotalLable()
+        {
+            var total = items.Where(x => x.Category.Type == TransactionType.Income).Sum(x => x.Amount)
+                - items.Where(x => x.Category.Type == TransactionType.Cost).Sum(x => x.Amount);
+
+            TotalTextBlock.Text = total.ToString("C", CultureInfo.CurrentCulture);
         }
 
         private void NewButton_Click(object sender, RoutedEventArgs e)
         {
+            var newTransaction = new TransactionDTO() { Date = DateTime.Now};
 
+            var dialog = new TransactionWindow(newTransaction);
+            dialog.ShowDialog();
+            if(dialog.DialogResult == true)
+            {
+                _transactionService.CreateTransaction(newTransaction);
+                FillOutTransactionList();
+            }
         }
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
@@ -56,6 +75,23 @@ namespace Personal_finance.Views
             {
                 _transactionService.DeleteTransaction(selected);
                 FillOutTransactionList();
+            }
+        }
+
+        private void EditButton_Click(object sender, RoutedEventArgs e)
+        {
+            var selected = UserBalanceDateBinding.SelectedItem as TransactionDTO;
+
+            if(selected != null)
+            {
+                var dialog = new TransactionWindow(selected);
+                dialog.ShowDialog();
+
+                if (dialog.DialogResult == true)
+                {
+                    _transactionService.EditTransaction(selected);
+                    FillOutTransactionList();
+                }
             }
         }
     }
