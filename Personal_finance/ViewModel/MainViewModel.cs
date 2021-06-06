@@ -15,7 +15,7 @@ namespace Personal_finance.ViewModel
 
         public MainViewModel()
         {
-            _views = new List<UserControl> { new UserBalance(), new About(), new EditCategory() };
+            _views = new List<UserControl> { new UserBalance(), new About(), new EditCategory(), new Statistics() };
 
             CurrentView = _views.First();
         }

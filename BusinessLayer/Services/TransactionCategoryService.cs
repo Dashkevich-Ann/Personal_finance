@@ -1,6 +1,7 @@
 ﻿using BusinessLayer.Mappers;
 using BusinessLayer.Models;
 using DataLayer.Interfaces;
+using DataLayer.Models;
 using DataLayer.Repositories;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,6 @@ namespace BusinessLayer.Services
         {
            
         }
-
         public IEnumerable<TransactionCategoryDTO> GetAllCategories()
         {
             using (unitOfWork = new UnitOfWork())
@@ -75,8 +75,51 @@ namespace BusinessLayer.Services
                     return unitOfWork.IncomeRepository.GetAll().Any(x => x.IncomeCategoryId == categoryDTO.Id);
                 }
             }
-
             return false;
+        }
+
+        public void CreateCategory(TransactionCategoryDTO transactionCategoryDTO)
+        {
+            using(unitOfWork = new UnitOfWork())
+            {
+                if( transactionCategoryDTO.Type == TransactionType.Cost)
+                {
+                    var cost = new CostСategory
+                    {
+                        Name = transactionCategoryDTO.Name,
+                        MonthLimit = transactionCategoryDTO.MonthLimit.GetValueOrDefault()
+                    };
+                    unitOfWork.CostCategoryRepository.Create(cost);
+                }
+                else if(transactionCategoryDTO.Type == TransactionType.Income)
+                {
+                    var income = new IncomeCategory
+                    {
+                        Name = transactionCategoryDTO.Name
+                    };
+                    unitOfWork.IncomeCategoryRepository.Create(income);
+                }
+                unitOfWork.Commit();
+            }
+        }
+
+        public void EditCategory(TransactionCategoryDTO transactionCategoryDTO)
+        {
+            using(unitOfWork = new UnitOfWork())
+            {
+                if(transactionCategoryDTO.Type == TransactionType.Income)
+                {
+                    var income = unitOfWork.IncomeCategoryRepository.Find(x => x.Id == transactionCategoryDTO.Id).First();
+                    income.Name = transactionCategoryDTO.Name;
+                }
+                else if(transactionCategoryDTO.Type == TransactionType.Cost)
+                {
+                    var cost = unitOfWork.CostCategoryRepository.Find(x => x.Id == transactionCategoryDTO.Id).First();
+                    cost.Name = transactionCategoryDTO.Name;
+                    cost.MonthLimit = transactionCategoryDTO.MonthLimit.GetValueOrDefault();
+                }
+                unitOfWork.Commit();
+            }
         }
     }
 }

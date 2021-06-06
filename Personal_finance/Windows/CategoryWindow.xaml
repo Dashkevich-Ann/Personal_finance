@@ -22,10 +22,10 @@
                  Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
         <Label Name="TypeLabel" Content="Type" Grid.Row="1" Grid.Column="0"  VerticalAlignment="Center" Margin="10" FontSize="14"></Label>
         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center">
-            <RadioButton x:Name="CostTypeCategory" Content="Cost" Margin="10" IsChecked="True" FontSize="14" Checked="CostTypeCategory_Checked"
+            <RadioButton x:Name="CostTypeCategory" Content="Cost" Margin="10" IsChecked="True" FontSize="14"
                          Command="{Binding RadioButtonCommand}" CommandParameter="1">
             </RadioButton>
-            <RadioButton x:Name="IncomeTypeCategory" Content="Income" Margin="10"  FontSize="14" Checked="IncomeTypeCategory_Checked"
+            <RadioButton x:Name="IncomeTypeCategory" Content="Income" Margin="10"  FontSize="14"
                         Command="{Binding RadioButtonCommand}" CommandParameter="0">
             </RadioButton>
         </StackPanel>

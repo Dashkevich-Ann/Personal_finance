@@ -46,13 +46,31 @@ namespace Personal_finance.Views
 
         private void NewButton_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new CategoryWindow(new TransactionCategoryDTO());
+            var newCategory = new TransactionCategoryDTO();
+            var dialog = new CategoryWindow(newCategory);
             dialog.ShowDialog();
+
+            if(dialog.DialogResult == true)
+            {
+                _categoryService.CreateCategory(newCategory);
+                FillOutCategoryList();
+            }
         }
 
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
+            var selected = CategoryList.SelectedItem as TransactionCategoryDTO;
 
+            if (selected != null)
+            {
+                var dialog = new CategoryWindow(selected, true);
+                dialog.ShowDialog();
+                if(dialog.DialogResult == true)
+                {
+                    _categoryService.EditCategory(selected);
+                    FillOutCategoryList();
+                }
+            }
         }
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)

@@ -21,10 +21,10 @@ namespace Personal_finance.Windows
     /// </summary>
     public partial class CategoryWindow : Window
     {
-        public CategoryWindow(TransactionCategoryDTO transactionCategoryDTO)
+        public CategoryWindow(TransactionCategoryDTO transactionCategoryDTO, bool isEditFlow = false)
         {
             InitializeComponent();
-            var viewModel = new CategoryViewModel(transactionCategoryDTO);
+            var viewModel = new CategoryViewModel(transactionCategoryDTO, isEditFlow);
             DataContext = viewModel;
             SetRadioButtons(transactionCategoryDTO);
             
@@ -32,7 +32,8 @@ namespace Personal_finance.Windows
 
         private void OKButton_Click(object sender, RoutedEventArgs e)
         {
-
+            DialogResult = true;
+            Close();
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
@@ -41,15 +42,6 @@ namespace Personal_finance.Windows
             Close();
         }
 
-        private void CostTypeCategory_Checked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void IncomeTypeCategory_Checked(object sender, RoutedEventArgs e)
-        {
-
-        }
 
         private void SetRadioButtons(TransactionCategoryDTO transactionCategoryDTO)
         {

@@ -114,6 +114,32 @@ namespace BusinessLayer.Services
                     _unit.Commit();
                 }
             }
-        } 
+        }
+
+        public TransactionStatisticsDTO GetStatistics(DateTime from, DateTime to)
+        {
+            using (_unit = new UnitOfWork())
+            {
+                var costs = _unit.CostRepository.GetAll().Where(x => x.Date >= from && x.Date <= to).Include(x => x.CostCategory).ToList();
+                var incomes = _unit.IncomeRepository.GetAll().Where(x => x.Date >= from && x.Date <= to).Include(x => x.IncomeCategory).ToList();
+
+                return new TransactionStatisticsDTO
+                {
+                    CostSum = costs.Sum(x => x.Amount),
+                    IncomeSum = incomes.Sum(x => x.Amount),
+                    CostStatistics = GetCostStatistic(costs),
+                };
+            }
+        }
+
+        private IEnumerable<CostStatisticItem> GetCostStatistic(List<Cost> costs)
+        {
+                return costs.ToLookup(x => x.CostCategoryId).Select(x => new CostStatisticItem
+                {
+                    Category = x.First().CostCategory.MapToDTO(),
+                    Sum = x.Sum(c => c.Amount)
+
+                }); 
+        }
     }
 }

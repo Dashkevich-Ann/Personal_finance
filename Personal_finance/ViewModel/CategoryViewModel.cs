@@ -13,12 +13,15 @@ namespace Personal_finance.ViewModel
     {
         private readonly TransactionCategoryDTO _transactionCategoryDTO;
         private bool _monthLimitDisabled;
+        private bool _isEditFlow;
         private ICommand _radioButtonCommand;
+        private ICommand _okBtnCommand;
 
-        public CategoryViewModel(TransactionCategoryDTO transactionCategoryDTO)
+        public CategoryViewModel(TransactionCategoryDTO transactionCategoryDTO, bool isEditFlow = false)
         {
             _transactionCategoryDTO = transactionCategoryDTO;
             _monthLimitDisabled = _transactionCategoryDTO.Type == TransactionType.Income;
+            _isEditFlow = isEditFlow;
         }
 
         public string Name
@@ -62,10 +65,33 @@ namespace Personal_finance.ViewModel
                 _transactionCategoryDTO.Type = type;
                 OnPropertyChanged("MonthLimitDisabled");
 
-            }));
+            }, param => !_isEditFlow));
 
-        public string this[string columnName] => throw new NotImplementedException();
+        public ICommand OkBtnCommand =>
+            _okBtnCommand ?? (_okBtnCommand = new RelayCommand(x => { }, TransactionIsValid));
 
-        public string Error => throw new NotImplementedException();
+        private bool TransactionIsValid(object obj) =>
+            string.IsNullOrEmpty(this[nameof(Name)])
+            && string.IsNullOrEmpty(this[nameof(MonthLimit)]);
+
+
+        public string this[string columnName] 
+        {
+            get
+            {
+                string result = string.Empty;
+                switch(columnName)
+                {
+                    case nameof(Name):
+                        {
+                            if (this.Name == null) result = "Please, fill in field.";
+                        } break;
+                    default: break;
+                }
+                return result;        
+            }
+        }
+
+        public string Error => null;
     }
 }
