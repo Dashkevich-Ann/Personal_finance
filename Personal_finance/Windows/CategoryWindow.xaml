@@ -18,7 +18,8 @@
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Label Name="NameLabel" Content="Name" Grid.Row="0" Grid.Column="0"  VerticalAlignment="Center" Margin="10" FontSize="14"></Label>
-        <TextBox Name="NameTextBox" Grid.Row="0" Grid.Column="1" Margin="10" BorderBrush="Black" BorderThickness="2" 
+        <TextBox Name="NameTextBox" Grid.Row="0" Grid.Column="1" Margin="10" BorderBrush="Black" BorderThickness="2"
+                 VerticalContentAlignment="Center" FontSize="14"
                  Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
         <Label Name="TypeLabel" Content="Type" Grid.Row="1" Grid.Column="0"  VerticalAlignment="Center" Margin="10" FontSize="14"></Label>
         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center">
@@ -31,6 +32,7 @@
         </StackPanel>
         <Label Name="MonthLimitLabel" Content="Month Limit" Grid.Row="2" Grid.Column="0"  VerticalAlignment="Center" Margin="10" FontSize="14"></Label>
         <TextBox Name="MonthLimitTextBox" Grid.Row="2" Grid.Column="1" Margin="10" BorderBrush="Black" BorderThickness="2" 
+                 VerticalContentAlignment="Center" FontSize="14"
                  Text="{Binding MonthLimit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                  IsReadOnly="{Binding MonthLimitDisabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                  ></TextBox>

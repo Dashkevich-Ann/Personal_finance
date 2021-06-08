@@ -32,6 +32,7 @@ namespace Personal_finance.Views
             _transactionService = new TransactionService();
             InitializeComponent();
             SetInitialDates();
+            SetStatusBarMessage("Statistics window was opened");
             FillOutStatisticsList();
         }
 
@@ -47,8 +48,6 @@ namespace Personal_finance.Views
 
         private void FillOutStatisticsList()
         {
-
-
             var statistic = _transactionService.GetStatistics(FromDate.SelectedDate.GetValueOrDefault(), ToDate.SelectedDate.GetValueOrDefault());
             items.Clear();
             foreach (var item in statistic.CostStatistics)
@@ -67,7 +66,14 @@ namespace Personal_finance.Views
 
         private void SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
+            SetStatusBarMessage($"Date from {FromDate.Text} to {ToDate.Text} was set");
             FillOutStatisticsList();
+        }
+
+        private void SetStatusBarMessage(string message)
+        {
+            var time = DateTime.Now.ToLongTimeString();
+            st.Text = $"{time}: {message}";
         }
     }
 }

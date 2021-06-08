@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.Models;
 using BusinessLayer.Services;
+using Personal_finance.Infrastructure;
 using Personal_finance.Windows;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,7 @@ namespace Personal_finance.Views
         public EditCategory()
         {
             InitializeComponent();
+            SetStatusBarMessage("Edit Category window was opened");
             FillOutCategoryList();
         }
 
@@ -46,48 +48,82 @@ namespace Personal_finance.Views
 
         private void NewButton_Click(object sender, RoutedEventArgs e)
         {
-            var newCategory = new TransactionCategoryDTO();
-            var dialog = new CategoryWindow(newCategory);
-            dialog.ShowDialog();
-
-            if(dialog.DialogResult == true)
+            try
             {
-                _categoryService.CreateCategory(newCategory);
-                FillOutCategoryList();
+                var newCategory = new TransactionCategoryDTO();
+                var dialog = new CategoryWindow(newCategory);
+                dialog.ShowDialog();
+
+                if (dialog.DialogResult == true)
+                {
+                    _categoryService.CreateCategory(newCategory);
+                    SetStatusBarMessage($"New category {newCategory.Type}.{newCategory.Name} was created.");
+                    FillOutCategoryList();
+                }
+            }
+            catch(Exception ex)
+            {
+                Logger.Error(ex.Message);
+                MessageBox.Show("Category creation error. Please, contact with help desk", "Error", MessageBoxButton.OK);
             }
         }
 
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
-            var selected = CategoryList.SelectedItem as TransactionCategoryDTO;
-
-            if (selected != null)
+            try
             {
-                var dialog = new CategoryWindow(selected, true);
-                dialog.ShowDialog();
-                if(dialog.DialogResult == true)
+                var selected = CategoryList.SelectedItem as TransactionCategoryDTO;
+
+                if (selected != null)
                 {
-                    _categoryService.EditCategory(selected);
-                    FillOutCategoryList();
+                    var dialog = new CategoryWindow(selected, true);
+                    dialog.ShowDialog();
+                    if (dialog.DialogResult == true)
+                    {
+                        _categoryService.EditCategory(selected);
+                        SetStatusBarMessage($"Category {selected.Type}.{selected.Name} was changed.");
+                        FillOutCategoryList();
+                    }
                 }
+            }
+            catch(Exception ex)
+            {
+                Logger.Error(ex.Message);
+                MessageBox.Show("Category edition error. Please, contact with help desk", "Error", MessageBoxButton.OK);
             }
         }
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            var selected = CategoryList.SelectedItem as TransactionCategoryDTO;
-
-            if(selected != null)
+            try
             {
-                if (_categoryService.CategoryInUse(selected))
-                {
-                    MessageBox.Show($"Category {selected.Name} is used. You can't delete it.", "Error", MessageBoxButton.OK);
-                    return;
-                }
+                var selected = CategoryList.SelectedItem as TransactionCategoryDTO;
 
-                _categoryService.DeleteCategory(selected);
-                FillOutCategoryList();
+                if (selected != null)
+                {
+                    if (_categoryService.CategoryInUse(selected))
+                    {
+                        MessageBox.Show($"Category {selected.Name} is used. You can't delete it.", "Error", MessageBoxButton.OK);
+                        return;
+                    }
+
+                    _categoryService.DeleteCategory(selected);
+                    SetStatusBarMessage($"Category {selected.Type}.{selected.Name} was deleted.");
+                    FillOutCategoryList();
+                }
             }
+            catch(Exception ex)
+            {
+                Logger.Error(ex.Message);
+                MessageBox.Show("Category remove error. Please, contact with help desk", "Error", MessageBoxButton.OK);
+            }
+            
+        }
+
+        private void SetStatusBarMessage(string message)
+        {
+            var time = DateTime.Now.ToLongTimeString();
+            st.Text = $"{time}: {message}";
         }
     }
 }

@@ -7,17 +7,18 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
-    <Grid Background="White">
+    <Grid Background="White" Margin="10 10 10 5">
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
             <RowDefinition Height="60"></RowDefinition>
+            <RowDefinition Height="25"></RowDefinition>
         </Grid.RowDefinitions>
 
         <Grid Name="dummygrid" Visibility="Hidden" Margin="10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="0.15*"></ColumnDefinition>
                 <ColumnDefinition Width="0.2*"></ColumnDefinition>
-                <ColumnDefinition Width="0.45*"></ColumnDefinition>
+                <ColumnDefinition Width="0.35*"></ColumnDefinition>
                 <ColumnDefinition Width="0.2*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Border Grid.Column="0" Name="dummywidth1"></Border>
@@ -37,12 +38,14 @@
             </ListView.View>
         </ListView>
         <DockPanel Grid.Row="1">
-            <Button Name="NewButton" Width="100" HorizontalAlignment="Left" Height="40" Margin="10" Content="New" FontSize="16" Cursor="Hand" Click="NewButton_Click"></Button>
-            <Button Name="EditButton" Width="100" HorizontalAlignment="Left" Height="40" Margin="10" Content="Edit" FontSize="16" Cursor="Hand" Click="EditButton_Click"></Button>
-            <Button Name="DeleteButton" Width="100" HorizontalAlignment="Left" Height="40" Margin="10" Content="Delete" FontSize="16" Cursor="Hand" Click="DeleteButton_Click"></Button>
+            <Button Name="NewButton" Width="100" HorizontalAlignment="Left" Height="40" Margin="10" Content="New" FontSize="18" Cursor="Hand" Click="NewButton_Click"></Button>
+            <Button Name="EditButton" Width="100" HorizontalAlignment="Left" Height="40" Margin="10" Content="Edit" FontSize="18" Cursor="Hand" Click="EditButton_Click"></Button>
+            <Button Name="DeleteButton" Width="100" HorizontalAlignment="Left" Height="40" Margin="10" Content="Delete" FontSize="18" Cursor="Hand" Click="DeleteButton_Click"></Button>
             <Label Content="TOTAL:" Width="300" HorizontalAlignment="Left" FontWeight="Bold" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" FontSize="18"></Label>
             <TextBlock x:Name="TotalTextBlock" Margin="10" FontSize="18" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left"></TextBlock>
         </DockPanel>
-        
+        <StatusBar x:Name="status" VerticalAlignment="Bottom" Grid.Row="2">
+            <TextBlock x:Name="st" HorizontalAlignment="Right"></TextBlock>
+        </StatusBar>
     </Grid>
 </UserControl>

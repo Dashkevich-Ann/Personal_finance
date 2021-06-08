@@ -1,23 +1,14 @@
 ﻿using BusinessLayer.Models;
 using BusinessLayer.Services;
+using Personal_finance.Infrastructure;
 using Personal_finance.ViewModel;
 using Personal_finance.Windows;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Personal_finance.Views
 {
@@ -31,6 +22,7 @@ namespace Personal_finance.Views
         public UserBalance()
         {
             InitializeComponent();
+            SetStatusBarMessage("User's Balance window was opened");
             FillOutTransactionList();
         }
 
@@ -56,43 +48,78 @@ namespace Personal_finance.Views
 
         private void NewButton_Click(object sender, RoutedEventArgs e)
         {
-            var newTransaction = new TransactionDTO() { Date = DateTime.Now};
-
-            var dialog = new TransactionWindow(newTransaction);
-            dialog.ShowDialog();
-            if(dialog.DialogResult == true)
+            try
             {
-                _transactionService.CreateTransaction(newTransaction);
-                FillOutTransactionList();
+                var newTransaction = new TransactionDTO() { Date = DateTime.Now };
+
+                var dialog = new TransactionWindow(newTransaction);
+                dialog.ShowDialog();
+                if (dialog.DialogResult == true)
+                {
+                    _transactionService.CreateTransaction(newTransaction);
+                    SetStatusBarMessage($"New {newTransaction.Category.Type}.{newTransaction.Category.Name} transaction was created");
+                    FillOutTransactionList();
+                }
+            }
+            catch(Exception ex)
+            {
+                Logger.Error(ex.Message);
+                MessageBox.Show("Transaction creation error. Please, contact with help desk", "Error", MessageBoxButton.OK);
             }
         }
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            var selected = UserBalanceDateBinding.SelectedItem as TransactionDTO;
+            try
+            { 
+                var selected = UserBalanceDateBinding.SelectedItem as TransactionDTO;
 
-            if(selected != null)
+                if(selected != null)
+                {
+                    _transactionService.DeleteTransaction(selected);
+                    SetStatusBarMessage($"{selected.Category.Type}.{selected.Category.Name} transaction was deleted");
+                    FillOutTransactionList();
+                }
+            }
+            catch(Exception ex)
             {
-                _transactionService.DeleteTransaction(selected);
-                FillOutTransactionList();
+                Logger.Error(ex.Message);
+                MessageBox.Show("Transaction remove error. Please, contact with help desk", "Error", MessageBoxButton.OK);
             }
         }
 
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
-            var selected = UserBalanceDateBinding.SelectedItem as TransactionDTO;
-
-            if(selected != null)
+            try
             {
-                var dialog = new TransactionWindow(selected);
-                dialog.ShowDialog();
+                var selected = UserBalanceDateBinding.SelectedItem as TransactionDTO;
 
-                if (dialog.DialogResult == true)
+                if (selected != null)
                 {
-                    _transactionService.EditTransaction(selected);
-                    FillOutTransactionList();
+                    var dialog = new TransactionWindow(selected);
+                    dialog.ShowDialog();
+
+                    if (dialog.DialogResult == true)
+                    {
+                        _transactionService.EditTransaction(selected);
+
+                        SetStatusBarMessage($"{selected.Category.Type}.{selected.Category.Name} transaction was changed");
+                        FillOutTransactionList();
+                    }
                 }
             }
+            catch(Exception ex)
+            {
+                Logger.Error(ex.Message);
+                MessageBox.Show("Transaction edition error. Please, contact with help desk", "Error", MessageBoxButton.OK);
+            }
+
+        }
+
+        private void SetStatusBarMessage(string message)
+        {
+            var time = DateTime.Now.ToLongTimeString();
+            st.Text = $"{time}: {message}";
         }
     }
 }

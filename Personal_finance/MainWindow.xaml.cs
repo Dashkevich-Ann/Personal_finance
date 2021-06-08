@@ -1,4 +1,5 @@
-﻿using Personal_finance.ViewModel;
+﻿using Personal_finance.Infrastructure;
+using Personal_finance.ViewModel;
 using Personal_finance.Windows;
 using System;
 using System.Collections.Generic;
@@ -33,11 +34,10 @@ namespace Personal_finance
             buttonList = new List<ToggleButton>()
             {
                 UserBalance,
-                About,
                 EditCategories,
                 Statistics
             };
-
+            Logger.Info("Application Personal Office is opened");
             SubscribeToggleButtonOnClikc();
         }
 
@@ -65,6 +65,27 @@ namespace Personal_finance
             {
                 button.Click += ToggleButtonCliked;
             }
+        }
+
+        private void SaveLog_Click(object sender, RoutedEventArgs e)
+        {
+            Logger.Show();
+        }
+
+        private void CloseApp_Click(object sender, RoutedEventArgs e)
+        {
+            Logger.Info("Application Personal Office is closed");
+            this.Close();
+        }
+        private void About_Click(object sender, RoutedEventArgs e)
+        {
+            var about = new AboutWindow();
+            about.Show();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Logger.Info("Application Personal Office is closed");
         }
     }
 }
