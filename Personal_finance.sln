@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Personal_finance", "Personal_finance\Personal_finance.csproj", "{4422AB54-72C0-4EE9-AE3D-DB04E2C1EE82}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D1623164-3644-4488-8DD4-F64609200A88} = {D1623164-3644-4488-8DD4-F64609200A88}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataLayer", "DataLayer\DataLayer.csproj", "{D1623164-3644-4488-8DD4-F64609200A88}"
 EndProject

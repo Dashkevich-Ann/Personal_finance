@@ -55,7 +55,6 @@
     <Compile Include="Models\TransactionCategoryDTO.cs" />
     <Compile Include="Models\TransactionDTO.cs" />
     <Compile Include="Models\TransactionStatisticsDTO.cs" />
-    <Compile Include="Models\UserDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\TransactionCategoryService.cs" />
     <Compile Include="Services\TransactionService.cs" />
